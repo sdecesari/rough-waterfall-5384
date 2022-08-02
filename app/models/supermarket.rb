@@ -4,6 +4,6 @@ class Supermarket < ApplicationRecord
   has_many :items, through: :customer_items
 
   def items_list
-    items.select('items.name').group('items.name')
+    items.joins(:customers).select('items.*, count(customers.id) as count').group("items.id").order(customer_count: :desc).limit(3)
   end
 end
